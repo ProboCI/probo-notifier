@@ -1,0 +1,22 @@
+{
+  "name": "probo-notifier",
+  "version": "0.0.0",
+  "description": "A service for sending notifications based on successful builds.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ProboCI/probo-notifier.git"
+  },
+  "keywords": [
+    "probo"
+  ],
+  "author": "Howard Tyson <howard@howardtyson.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ProboCI/probo-notifier/issues"
+  },
+  "homepage": "https://github.com/ProboCI/probo-notifier#readme"
+}
