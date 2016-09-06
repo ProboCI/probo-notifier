@@ -2,9 +2,6 @@
 
 var async = require('async');
 var bunyan = require('bunyan');
-var levelup = require('levelup');
-var _ = require('lodash');
-var memdown = require('memdown');
 var nock = require('nock');
 var eventbus = require('probo-eventbus');
 var request = require('request');
