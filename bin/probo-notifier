@@ -1,0 +1,15 @@
+#! /usr/bin/env node
+'use strict';
+
+var notifier = require('..');
+
+var Riker = require('riker');
+
+var riker = new Riker();
+for (let i in notifier.cli) {
+  var Command = notifier.cli[i];
+  var command = new Command();
+  riker.addSubCommand(command.commandName, command); 
+}
+// riker.add
+riker.run();
