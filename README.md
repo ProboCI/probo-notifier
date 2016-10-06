@@ -10,22 +10,14 @@ Simple examples:
 
 ``` yaml
 notifications:
-  webhook: https://example.com/api/travis-notification
-  slack: '<account>:<token>#development'
-  hipchat: '<token>@<room id or name>'
+  webhook: https://example.com/api/probo-notification
   
 ```
 
 ``` yaml
 
 notifications:
-  webhook: https://example.com/api/travis-notification
-  slack: '<account>:<token>#development'
+  webhook:
+    - https://example.com/api/probo-notification1
+    - https://example.com/api/probo-notification2
 ```
-
-## The schema
-
-```` json
-{
-}
-````
