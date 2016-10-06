@@ -1,1 +1,9 @@
+apiServerHost: localhost
+apiServerPort: 3039
+eventStreams:
+  build_events:
+    plugin: Memory
+    config:
+      topic: build_events
+
 
