@@ -1,9 +1,13 @@
 #! /usr/bin/env node
 'use strict';
 
+var path = require('path');
+
+var osenv = require('osenv');
+var Riker = require('riker');
+
 var notifier = require('..');
 
-var Riker = require('riker');
 
 var riker = new Riker();
 for (let i in notifier.cli) {
@@ -11,5 +15,10 @@ for (let i in notifier.cli) {
   var command = new Command();
   riker.addSubCommand(command.commandName, command); 
 }
-// riker.add
+riker.registerConfigFile(path.join(__dirname, '..', 'default.yaml'));
+riker.registerConfigFile('/' + path.join('etc', 'probo', 'notifier.yaml'));
+riker.registerConfigFile('/' + path.join('etc', 'probo', 'notifier.d'));
+riker.registerConfigFile(path.join(osenv.home(), '.probo-notifier.yaml'));
+// TODO: Load env vars, load params
+//riker.registerConfigObject();
 riker.run();
