@@ -21,6 +21,7 @@
   "homepage": "https://github.com/ProboCI/probo-notifier#readme",
   "dependencies": {
     "async": "^2.0.1",
+    "bunyan": "^1.8.1",
     "eslint-config-probo": "^2.0.0",
     "jsonwebtoken": "^7.1.9",
     "mustache": "^2.2.1",

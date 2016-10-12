@@ -6,6 +6,12 @@ similar.
 
 ## The configuration
 
+You can add notifications to your build simply by adding a `notifications` key to your
+`.probo.yaml` file. This will allow you to start getting webhooks delivered to your
+service when changes happend to your builds including steps completing and builds passing
+or failing.
+
+
 Simple examples:
 
 ``` yaml
