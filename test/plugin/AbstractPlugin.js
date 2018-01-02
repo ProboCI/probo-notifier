@@ -21,7 +21,7 @@ describe('AbstractPlugin', function() {
       should.exist(new TestPlugin().prepareObject({build: {}}).build.links);
       new TestPlugin().prepareObject({build: {links: {a: 'b'}}}).build.links.a.should.equal('b');
       should.not.exist(new TestPlugin().prepareObject({build: {foo: 'bar'}}).foo);
-      Object.keys(new TestPlugin().prepareObject(getTestBuildEvent()).build).length.should.equal(10, 'The appropiate number of keys are included in the sanitized object.');
+      Object.keys(new TestPlugin().prepareObject(getTestBuildEvent()).build).length.should.equal(14, 'The appropiate number of keys are included in the sanitized object.');
     });
   });
   describe('templateString', function() {
