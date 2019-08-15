@@ -6,4 +6,6 @@ eventStreams:
     config:
       topic: build_events
 
-
+assets:
+  url: "http://localhost:3070"
+  token: "API token here"
