@@ -32,7 +32,7 @@
     "through2": "^2.0.1"
   },
   "devDependencies": {
-    "eslint": "^3.4.0",
+    "eslint": "^6.6.0",
     "eslint-config-probo": "^1.1.0",
     "istanbul": "^0.4.5",
     "lodash": "^4.15.0",
