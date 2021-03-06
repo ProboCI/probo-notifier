@@ -1,6 +1,6 @@
 {
   "name": "probo-notifier",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A service for sending notifications based on successful builds.",
   "main": "index.js",
   "scripts": {
