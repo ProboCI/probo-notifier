@@ -26,7 +26,7 @@
     "mustache": "^3.0.1",
     "nock": "^10.0.6",
     "osenv": "^0.1.5",
-    "probo-eventbus": "proboci/probo-eventbus#kafka-node",
+    "probo-eventbus": "^1.0.5",
     "request": "^2.88.0",
     "riker": "^1.4.3",
     "through2": "^3.0.1"
