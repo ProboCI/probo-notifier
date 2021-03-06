@@ -6,14 +6,14 @@ var path = require('path');
 var osenv = require('osenv');
 var Riker = require('riker');
 
-var notifier = require('..');
+var cli = require('../lib/cli');
 
 
 var riker = new Riker();
-for (let i in notifier.cli) {
-  var Command = notifier.cli[i];
+for (let i in cli) {
+  var Command = cli[i];
   var command = new Command();
-  riker.addSubCommand(command.commandName, command); 
+  riker.addSubCommand(command.commandName, command);
 }
 riker.registerConfigFile(path.join(__dirname, '..', 'default.yaml'));
 riker.registerConfigFile('/' + path.join('etc', 'probo', 'notifier.yaml'));

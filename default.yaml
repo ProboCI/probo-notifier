@@ -5,5 +5,3 @@ eventStreams:
     plugin: Memory
     config:
       topic: build_events
-
-

@@ -98,6 +98,7 @@ function getTestBuildEvent(object) {
     },
     active: true,
   };
+
   return {build: _.merge(baseline, object), event: 'ready'};
 }
 module.exports = getTestBuildEvent;
