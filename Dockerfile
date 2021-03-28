@@ -16,3 +16,5 @@ WORKDIR /home/probo/app
 EXPOSE 3039
 
 CMD ["bin/probo-notifier", "server"]
+
+CMD ["sh", "/home/probo/app/bin/startup.sh"]
