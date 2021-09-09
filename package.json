@@ -1,6 +1,6 @@
 {
   "name": "probo-notifier",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "A service for sending notifications based on successful builds.",
   "main": "index.js",
   "scripts": {
@@ -34,8 +34,8 @@
   "devDependencies": {
     "eslint": "^6.1.0",
     "eslint-config-probo": "^2.0.0",
-    "lodash": "^4.17.15",
-    "mocha": "^6.2.0",
+    "lodash": "^4.17.21",
+    "mocha": "^8.3.1",
     "nyc": "^14.1.1",
     "should": "^13.2.3"
   }
