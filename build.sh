@@ -32,7 +32,7 @@ if [ -z "$1" ]; then
 fi
 
 echo -n "Hash: "
-docker build . -q -t $1/db:$tag
+docker build . -q -t $1/notifier:$tag
 echo -n  "Repo: "
-docker push -q $1/db:$tag
+docker push -q $1/notifier:$tag
 echo ""
