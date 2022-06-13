@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/ProboCI/probo-notifier#readme",
   "dependencies": {
-    "async": "^3.1.0",
+    "async": "^3.2.2",
     "bunyan": "^1.8.12",
     "jsonwebtoken": "^8.5.1",
     "mustache": "^3.0.1",
