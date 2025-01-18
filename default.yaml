@@ -1,5 +1,3 @@
-apiServerHost: localhost
-apiServerPort: 3039
 eventStreams:
   buildEvents:
     plugin: Kafka
