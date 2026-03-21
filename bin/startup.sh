@@ -1,3 +1,3 @@
 #!/bin/bash
 
-exec /home/probo/app/bin/probo-notifier server
+exec /home/probo/app/bin/probo-notifier
