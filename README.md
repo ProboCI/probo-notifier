@@ -188,7 +188,7 @@ For example:
 ./build.sh mbagnall dev
 ```
 
-The image is based on `node:22-alpine` and exposes port **3039**.
+The image is based on `node:22-alpine`.
 
 ## License
 
