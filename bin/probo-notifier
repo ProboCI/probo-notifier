@@ -1,24 +1,28 @@
 #! /usr/bin/env node
 'use strict';
 
+var os = require('os');
 var path = require('path');
 
-var osenv = require('osenv');
-var Riker = require('riker');
+var {loadConfig} = require('../lib/config_loader');
+var EventConsumer = require('../lib/event_consumer');
+var Server = require('../lib/Server');
+var logger = require('../lib/logger').get();
 
-var cli = require('../lib/cli');
+var config = loadConfig([
+  path.join(__dirname, '..', 'default.yaml'),
+  '/' + path.join('etc', 'probo', 'notifier.yaml'),
+  '/' + path.join('etc', 'probo', 'notifier.d'),
+  path.join(os.homedir(), '.probo-notifier.yaml'),
+]);
 
+var streamConfig = config.eventStreams.buildEvents.config;
+streamConfig.plugin = config.eventStreams.buildEvents.plugin;
 
-var riker = new Riker();
-for (let i in cli) {
-  var Command = cli[i];
-  var command = new Command();
-  riker.addSubCommand(command.commandName, command);
-}
-riker.registerConfigFile(path.join(__dirname, '..', 'default.yaml'));
-riker.registerConfigFile('/' + path.join('etc', 'probo', 'notifier.yaml'));
-riker.registerConfigFile('/' + path.join('etc', 'probo', 'notifier.d'));
-riker.registerConfigFile(path.join(osenv.home(), '.probo-notifier.yaml'));
-// TODO: Load env vars, load params
-//riker.registerConfigObject();
-riker.run();
+var server = new Server({
+  consumer: new EventConsumer(streamConfig),
+});
+
+server.start(function() {
+  logger.info('Probo Notifier server started');
+});
