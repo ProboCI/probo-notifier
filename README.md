@@ -1,19 +1,25 @@
 # Probo Notifier
 
-A microservice in the [ProboCI](http://probo.ci) suite that consumes build events from a Kafka event bus and dispatches notifications (webhooks) to external services.
+This project is a part of the [probo.ci](http://probo.ci) suite and is responsible
+for sending notifications of build events to external services in the form of webhooks or
+similar.
 
 ## Configuration
 
-Add a `notifications` key to your `.probo.yaml` file to receive webhooks when build events occur, including steps completing, builds passing, or builds failing.
+Add a `notifications` key to your `.probo.yaml` file to receive notifications
+when build events occur, including steps completing and builds passing or failing.
 
-### Single webhook
+### Webhook
+
+The webhook plugin sends a POST request with build event data to the configured URL(s)
+on every build event.
 
 ``` yaml
 notifications:
   webhook: https://example.com/api/probo-notification
 ```
 
-### Multiple webhooks
+Multiple webhooks:
 
 ``` yaml
 notifications:
@@ -22,63 +28,15 @@ notifications:
     - https://example.com/api/probo-notification2
 ```
 
-### Object format
+#### Webhook Payload
 
-``` yaml
-notifications:
-  webhook:
-    url: https://example.com/api/probo-notification
-```
+The webhook POST body is a JSON object with the following structure:
 
-## Webhook Payload
-
-The webhook is sent as a JSON POST request. The payload is a sanitized subset of the internal build event — sensitive fields like auth tokens and internal metrics are stripped out.
-
-### Top-level fields
-
-| Field | Type | Description |
-|---|---|---|
-| `event` | string | The event that triggered the notification (e.g., `"ready"`) |
-| `eventData` | object | Additional data associated with the event |
-| `image` | string | The Docker image configured for the build |
-| `provider` | string | The source control provider slug (e.g., `"github"`) |
-| `repo` | string | The repository name |
-| `slug` | string | The full repository slug (e.g., `"owner/repo"`) |
-| `active` | boolean | Whether the project is active |
-| `name` | string | The full project name (e.g., `"owner/repo"`) |
-| `organizationId` | string | The organization UUID |
-| `organization` | string | The organization name (parsed from the project name) |
-| `owner` | string | The repository owner |
-
-### `build` fields
-
-| Field | Type | Description |
-|---|---|---|
-| `build.id` | string | The build UUID |
-| `build.status` | string | The current build status |
-| `build.name` | string | The build name |
-| `build.createdAt` | string | ISO 8601 timestamp of build creation |
-| `build.updatedAt` | string | ISO 8601 timestamp of last update |
-| `build.projectId` | string | The project UUID |
-| `build.pinned` | boolean | Whether the build is pinned |
-| `build.reaped` | boolean | Whether the build has been reaped |
-| `build.reapedReason` | string | Reason the build was reaped, if applicable |
-| `build.links` | object | URLs for the build, pull request, and branch environments |
-| `build.pullRequest` | object | Pull request details (`name`, `number`, `description`, `htmlUrl`) |
-| `build.commit` | object | Commit details (`ref`, `htmlUrl`) |
-| `build.branch` | object | Branch details (`name`, `htmlUrl`) |
-| `build.config` | object | The build configuration from `.probo.yaml` |
-| `build.container` | object | Container information |
-| `build.diskSpace` | object | Disk space usage (`realBytes`, `virtualBytes`) |
-| `build.steps` | array | Build step definitions and their statuses |
-
-### Example payload
-
-```json
+``` json
 {
   "event": "ready",
-  "eventData": null,
-  "image": "proboci/ubuntu-18.04-lamp",
+  "eventData": {},
+  "image": "proboci/ubuntu-18.04-lamp:latest",
   "provider": "github",
   "repo": "awesome-drupal-project",
   "slug": "tizzo/awesome-drupal-project",
@@ -88,19 +46,19 @@ The webhook is sent as a JSON POST request. The payload is a sanitized subset of
   "organization": "tizzo",
   "owner": "tizzo",
   "build": {
-    "id": "d571d17d-ce03-4689-9cf1-d829caebbb9a",
     "status": "running",
-    "name": null,
     "createdAt": "2016-06-15T03:45:08.431Z",
     "updatedAt": "2016-06-15T03:45:08.727Z",
-    "projectId": "bee7244f-9b97-44e6-8952-951495b2e738",
-    "pinned": null,
     "reaped": false,
     "reapedReason": null,
+    "projectId": "bee7244f-9b97-44e6-8952-951495b2e738",
+    "pinned": null,
+    "name": null,
+    "id": "d571d17d-ce03-4689-9cf1-d829caebbb9a",
     "links": {
-      "pullRequest": "http://bee7244f-9b97-44e6-8952-951495b2e738--pr-9.local.probo.build",
-      "branch": "http://bee7244f-9b97-44e6-8952-951495b2e738--br-pr-to-close.local.probo.build",
-      "build": "http://d571d17d-ce03-4689-9cf1-d829caebbb9a.local.probo.build"
+      "pullRequest": "http://bee7244f--pr-9.local.probo.build",
+      "branch": "http://bee7244f--br-pr-to-close.local.probo.build",
+      "build": "http://d571d17d.local.probo.build"
     },
     "pullRequest": {
       "description": "",
@@ -109,25 +67,14 @@ The webhook is sent as a JSON POST request. The payload is a sanitized subset of
       "number": "9"
     },
     "commit": {
-      "htmlUrl": "https://github.com/tizzo/awesome-drupal-project/commit/37ec694b41ebe39e99f429e9f0eb67d7a63a7ec9",
+      "htmlUrl": "https://github.com/tizzo/awesome-drupal-project/commit/37ec694b",
       "ref": "37ec694b41ebe39e99f429e9f0eb67d7a63a7ec9"
     },
     "branch": {
       "htmlUrl": "https://github.com/tizzo/awesome-drupal-project/tree/pr-to-close",
       "name": "pr-to-close"
     },
-    "config": {
-      "steps": [
-        {
-          "name": "Sleep and setup a docroot",
-          "plugin": "Script",
-          "script": "sleep 15\nmkdir -p /var/www/html\n"
-        }
-      ],
-      "notifications": {
-        "webhook": "https://example.com/api/probo-notification"
-      }
-    },
+    "config": {},
     "container": {},
     "diskSpace": {
       "realBytes": 0,
@@ -138,58 +85,99 @@ The webhook is sent as a JSON POST request. The payload is a sanitized subset of
 }
 ```
 
-## Development
+### Slack
 
-### Prerequisites
+The Slack plugin sends a message to one or more Slack channels when a build
+completes (the `ready` event). It requires a Slack app with an incoming webhook URL.
 
-- Node.js 22
-- npm
+#### Setup
 
-### Setup
+1. Create a Slack app at https://api.slack.com/apps/new and add an incoming webhook.
 
-```bash
-npm install
+2. For security, webhook URLs are not stored in `.probo.yaml`. Instead, upload a
+   `probo-credentials.yml` [asset file](https://docs.probo.ci/build/assets/) containing
+   the webhook URL(s):
+
+``` yaml
+notifications:
+  slack:
+    webhook:
+      - https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
-### Running the server
+3. Enable Slack notifications in your `.probo.yaml`:
 
-```bash
-./bin/probo-notifier
+``` yaml
+notifications:
+  slack: true
 ```
 
-Configuration is loaded in order from:
+Or with a custom message:
 
-1. `default.yaml` (bundled defaults)
-2. `/etc/probo/notifier.yaml`
-3. `/etc/probo/notifier.d/` (directory of YAML files)
-4. `~/.probo-notifier.yaml`
-
-### Running tests
-
-```bash
-npm test
+``` yaml
+notifications:
+  slack:
+    message: "Build ready for `$PROJECT_NAME` on `$BRANCH_NAME` at $BUILD_URL"
 ```
 
-### Linting
+#### Template Variables
 
-```bash
-npx eslint .
+The following variables can be used in custom Slack messages:
+
+| Variable | Description |
+|---|---|
+| `$PROJECT_NAME` | The project name (e.g., `tizzo/awesome-drupal-project`) |
+| `$BRANCH_NAME` | The branch name (e.g., `pr-to-close`) |
+| `$BRANCH_URL` | URL to the branch on the provider |
+| `$BUILD_URL` | URL to the Probo build environment |
+
+### Jira
+
+The Jira plugin automatically adds a comment to a Jira issue when a build
+completes (the `ready` event). The issue is identified from the branch name — branches
+must follow the format `PROJECTKEY-123/optional-description` (e.g., `DEV-42/add-login-page`).
+
+#### Setup
+
+1. Add Jira credentials to your `probo-credentials.yml`
+   [asset file](https://docs.probo.ci/build/assets/):
+
+``` yaml
+notifications:
+  jira:
+    url: https://yourcompany.atlassian.net
+    user: jira-user@example.com
+    password: your-api-token
 ```
 
-## Docker
+2. Enable Jira notifications in your `.probo.yaml`:
 
-```bash
-./build.sh <repository_name> <tag>
+``` yaml
+notifications:
+  jira: true
 ```
 
-For example:
+Or with a custom message:
 
-```bash
-./build.sh mbagnall dev
+``` yaml
+notifications:
+  jira:
+    message: "Probo build ready for $PROJECT_NAME on branch $BRANCH_NAME: $BUILD_URL"
 ```
 
-The image is based on `node:22-alpine`.
+#### How It Works
 
-## License
+When a build completes, the plugin extracts the Jira issue ID from the branch name
+using the pattern `PROJECTKEY-NUMBER` (e.g., `DEV-42`). It then posts a comment to
+that issue via the Jira REST API (`/rest/api/2/issue/{issueId}/comment`).
 
-Apache-2.0
+If the branch name does not match the expected pattern, no comment is posted.
+
+#### Template Variables
+
+| Variable | Description |
+|---|---|
+| `$PROJECT_NAME` | The project name (e.g., `tizzo/awesome-drupal-project`) |
+| `$BRANCH_NAME` | The branch name (e.g., `DEV-42/add-login-page`) |
+| `$BRANCH_URL` | URL to the branch on the provider |
+| `$BUILD_URL` | URL to the Probo build environment |

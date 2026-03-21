@@ -21,8 +21,10 @@
   "homepage": "https://github.com/ProboCI/probo-notifier#readme",
   "dependencies": {
     "bunyan": "^1.8.12",
-    "js-yaml": "^4.1.1",
+    "js-yaml": "^3.13.1",
+    "jsonwebtoken": "^8.5.1",
     "mustache": "^3.0.1",
+    "nock": "^10.0.6",
     "probo-eventbus": "^1.0.5",
     "request": "^2.88.0",
     "through2": "^3.0.1"

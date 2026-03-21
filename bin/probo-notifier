@@ -20,6 +20,7 @@ var streamConfig = config.eventStreams.buildEvents.config;
 streamConfig.plugin = config.eventStreams.buildEvents.plugin;
 
 var server = new Server({
+  config: config,
   consumer: new EventConsumer(streamConfig),
 });
 

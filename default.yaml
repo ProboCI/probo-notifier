@@ -7,3 +7,7 @@ eventStreams:
       version: 1
       streamOptions:
         highWaterMark: 0
+
+assets:
+  url: "http://localhost:3070"
+  token: "API token here"
