@@ -1,10 +1,12 @@
-apiServerHost: localhost
-apiServerPort: 3039
 eventStreams:
-  build_events:
-    plugin: Memory
+  buildEvents:
+    plugin: Kafka
     config:
       topic: build_events
+      group: notifier
+      version: 1
+      streamOptions:
+        highWaterMark: 0
 
 assets:
   url: "http://localhost:3070"
