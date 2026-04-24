@@ -23,6 +23,4 @@ RUN cd /home/probo/app/ && npm install
 
 WORKDIR /home/probo/app
 
-EXPOSE 3039
-
 CMD ["sh", "/home/probo/app/bin/startup.sh"]

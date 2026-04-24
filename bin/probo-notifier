@@ -4,26 +4,26 @@
 var os = require('os');
 var path = require('path');
 
-var loadConfig = require('../lib/config_loader');
+var {loadConfig} = require('../lib/config_loader');
 var EventConsumer = require('../lib/event_consumer');
 var Server = require('../lib/Server');
+var logger = require('../lib/logger').get();
 
-var configPaths = [
+var config = loadConfig([
   path.join(__dirname, '..', 'default.yaml'),
-  path.join('/', 'etc', 'probo', 'notifier.yaml'),
-  path.join('/', 'etc', 'probo', 'notifier.d'),
+  '/' + path.join('etc', 'probo', 'notifier.yaml'),
+  '/' + path.join('etc', 'probo', 'notifier.d'),
   path.join(os.homedir(), '.probo-notifier.yaml'),
-];
-
-var config = loadConfig(configPaths);
+]);
 
 var streamConfig = config.eventStreams.buildEvents.config;
 streamConfig.plugin = config.eventStreams.buildEvents.plugin;
 
-var options = {
+var server = new Server({
   config: config,
   consumer: new EventConsumer(streamConfig),
-};
+});
 
-var server = new Server(options);
-server.start(function() {});
+server.start(function() {
+  logger.info('Probo Notifier server started');
+});

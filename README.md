@@ -130,3 +130,54 @@ The following variables can be used in custom Slack messages:
 | `$BRANCH_NAME` | The branch name (e.g., `pr-to-close`) |
 | `$BRANCH_URL` | URL to the branch on the provider |
 | `$BUILD_URL` | URL to the Probo build environment |
+
+### Jira
+
+The Jira plugin automatically adds a comment to a Jira issue when a build
+completes (the `ready` event). The issue is identified from the branch name — branches
+must follow the format `PROJECTKEY-123/optional-description` (e.g., `DEV-42/add-login-page`).
+
+#### Setup
+
+1. Add Jira credentials to your `probo-credentials.yml`
+   [asset file](https://docs.probo.ci/build/assets/):
+
+``` yaml
+notifications:
+  jira:
+    url: https://yourcompany.atlassian.net
+    user: jira-user@example.com
+    password: your-api-token
+```
+
+2. Enable Jira notifications in your `.probo.yaml`:
+
+``` yaml
+notifications:
+  jira: true
+```
+
+Or with a custom message:
+
+``` yaml
+notifications:
+  jira:
+    message: "Probo build ready for $PROJECT_NAME on branch $BRANCH_NAME: $BUILD_URL"
+```
+
+#### How It Works
+
+When a build completes, the plugin extracts the Jira issue ID from the branch name
+using the pattern `PROJECTKEY-NUMBER` (e.g., `DEV-42`). It then posts a comment to
+that issue via the Jira REST API (`/rest/api/2/issue/{issueId}/comment`).
+
+If the branch name does not match the expected pattern, no comment is posted.
+
+#### Template Variables
+
+| Variable | Description |
+|---|---|
+| `$PROJECT_NAME` | The project name (e.g., `tizzo/awesome-drupal-project`) |
+| `$BRANCH_NAME` | The branch name (e.g., `DEV-42/add-login-page`) |
+| `$BRANCH_URL` | URL to the branch on the provider |
+| `$BUILD_URL` | URL to the Probo build environment |
