@@ -2,11 +2,11 @@ eventStreams:
   buildEvents:
     plugin: Kafka
     config:
-      topic: build_events
-      group: notifier
-      version: 1
-      streamOptions:
-        highWaterMark: 0
+      consumerTopic: build_events
+      groupId: notifier
+      clientId: probo-notifier
+      brokers:
+        - localhost:9092
 
 assets:
   url: "http://localhost:3070"
