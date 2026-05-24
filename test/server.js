@@ -1,26 +1,23 @@
 'use strict';
 
-const eventbus = require('probo-eventbus');
 const should = require('should');
-const through2 = require('through2');
 
 const Server = require('../lib/Server');
 
+const FakeConsumer = require('./fixtures/FakeConsumer');
 const TestPlugin = require('./fixtures/TestPlugin');
 const getTestBuildEvent = require('./fixtures/buildEvent');
 
-// We use a simple method to reset the world between tests by
-// using global variables.
-var stream = null;
+var consumer = null;
 var server = null;
 
 describe('Server', function() {
   describe('webhook routing', function() {
     beforeEach(function(done) {
-      stream = through2.obj();
+      consumer = new FakeConsumer();
 
       var options = {
-        consumer: new eventbus.plugins.Memory.Consumer({stream}),
+        consumer: consumer,
         plugins: {
           test: TestPlugin,
         },
@@ -42,14 +39,8 @@ describe('Server', function() {
         done();
       });
 
-      const message = {
-        data: getTestBuildEvent(),
-      };
-
-      stream.write(message);
+      consumer.publish(getTestBuildEvent());
     });
 
   });
 });
-
-
